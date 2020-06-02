@@ -17,6 +17,7 @@
 2)Установка Centos 7 на ВМ и переименование VG в LVM
 
 Осуществляем смену имени группы томов centos (VG) на OtusRoot с помощью команды vgrename.
+
 [root@localhost ~]# vgrename centos OtusRoot
   Volume group "centos" successfully renamed to "OtusRoot"
 После чего меняем во всех трех файлах конфигурации(/etc/fstab,/etc/default/grub,/boot/grub2/grub.cfg)grub имя centos VG на обнавленное имя OtusRoot.
