@@ -1,6 +1,6 @@
 Описание ДЗ 6
 
-Разница между методами получения шелла в процессе загрузки
+1)Разница между методами получения шелла в процессе загрузки
 
 Способ 1. init=/bin/sh
 
@@ -13,3 +13,18 @@
 Способ 3. rw init=/sysroot/bin/sh
 
 Данный метод является для меня сам предпочитаемым. Самое важное отличие в том что, мы заменяем данную команду на ro, и поэтому попадаем в корневую файловую систему с правами на чтение.
+
+2)Установка Centos 7 на ВМ и переименование VG в LVM
+
+Осуществляем смену имени группы томов centos (VG) на OtusRoot с помощью команды vgrename.
+[root@localhost ~]# vgrename centos OtusRoot
+  Volume group "centos" successfully renamed to "OtusRoot"
+После чего меняем во всех трех файлах конфигурации(/etc/fstab,/etc/default/grub,/boot/grub2/grub.cfg)grub имя centos VG на обнавленное имя OtusRoot.
+
+Далее обновляем настройки initrd, который предназначен для загрузки корневой файловой системы
+[root@localhost ~]# mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)
+
+После успешной перезагрузки можно проверить применились ли изменения по смене имени VG.
+[root@localhost ~]# vgs
+  VG     #PV #LV #SN Attr   VSize   VFree
+  OtusRoot   1   2   0 wz--n- <15.00g    0 
